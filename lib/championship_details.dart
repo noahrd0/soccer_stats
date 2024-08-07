@@ -8,7 +8,7 @@ class ChampionshipDetailsPage extends StatefulWidget {
   final int championshipId;
   final int season;
 
-  ChampionshipDetailsPage({required this.championshipId, required this.season});
+  const ChampionshipDetailsPage({super.key, required this.championshipId, required this.season});
 
   @override
   _ChampionshipDetailsPageState createState() => _ChampionshipDetailsPageState();
@@ -62,39 +62,39 @@ class _ChampionshipDetailsPageState extends State<ChampionshipDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Championship Details', style: GoogleFonts.firaSans()),
-        backgroundColor: Color(0xFF2F70AF),
+        backgroundColor: const Color(0xFF2F70AF),
       ),
       body: championshipDetails == null
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     championshipDetails!['league']['name'],
                     style: GoogleFonts.firaSans(
-                      textStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF2F70AF)),
+                      textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF2F70AF)),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Season: ${widget.season}',
                     style: GoogleFonts.numans(
-                      textStyle: TextStyle(fontSize: 18, color: Color(0xFF806491)),
+                      textStyle: const TextStyle(fontSize: 18, color: Color(0xFF806491)),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     'Top Scorers:',
                     style: GoogleFonts.firaSans(
-                      textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF2F70AF)),
+                      textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF2F70AF)),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   ...championshipDetails!['topScorers'].map<Widget>((scorer) {
                     return Card(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
                       elevation: 5,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
@@ -108,7 +108,7 @@ class _ChampionshipDetailsPageState extends State<ChampionshipDetailsPage> {
                               backgroundImage: NetworkImage(scorer['player']['photo']),
                               radius: 30,
                             ),
-                            SizedBox(width: 15),
+                            const SizedBox(width: 15),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,21 +116,21 @@ class _ChampionshipDetailsPageState extends State<ChampionshipDetailsPage> {
                                   Text(
                                     scorer['player']['name'],
                                     style: GoogleFonts.firaSans(
-                                      textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                      textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                     ),
                                   ),
-                                  SizedBox(height: 5),
+                                  const SizedBox(height: 5),
                                   Text(
                                     'Goals: ${scorer['statistics'][0]['goals']['total']}',
                                     style: GoogleFonts.numans(),
                                   ),
-                                  SizedBox(height: 5),
+                                  const SizedBox(height: 5),
                                   Text(
                                     'Club: ${scorer['statistics'][0]['team']['name']}',
                                     style: GoogleFonts.numans(
                                     ),
                                   ),
-                                  SizedBox(height: 5),
+                                  const SizedBox(height: 5),
                                   Text(
                                     'Matches Played: ${scorer['statistics'][0]['games']['appearences']}',
                                     style: GoogleFonts.numans(

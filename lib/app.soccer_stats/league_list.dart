@@ -21,20 +21,20 @@ class _LeagueListState extends State<LeagueList> {
 
   Future<void> fetchLeagueData() async {
     var headers = {
-      'x-rapidapi-key': '',
+      'x-rapidapi-key': '953bef4957246aa80190f16a405714d9',
       'x-rapidapi-host': 'v3.football.api-sports.io',
     };
 
     var request = http.Request(
       'GET',
-      Uri.parse('https://v3.football.api-sports.io/leagues?season=2024?country=France'),
+      Uri.parse('https://v1.rugby.api-sports.io/leagues?season=2024&country=World'),
     );
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      print(response.statusCode);
+      print(response.reasonPhrase);
       String responseBody = await response.stream.bytesToString();
       setState(() {
         leagueData = jsonDecode(responseBody)['response'];
@@ -52,9 +52,12 @@ class _LeagueListState extends State<LeagueList> {
         : Column(
               children: leagueData!.map<Widget>((league) {
                 return SingleLeague(
-                  imagePath: league['league']['logo']??'',
-                  text: league['league']['name'],
-                  value: league['league']['id'].toString(),
+                  // imagePath: league['league']['logo']??'',
+                  // text: league['league']['name'],
+                  // value: league['league']['id'].toString(),
+                  imagePath: league['logo'],
+                  text: league['name'],
+                  value: league['id'].toString(),
                 );
               }).toList(),
             );

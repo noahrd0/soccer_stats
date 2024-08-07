@@ -19,11 +19,14 @@ class SingleLeague extends StatelessWidget {
     return ListTile(
       title: Row(
         children: [
-          Image.network(
+            Image.network(
             imagePath,
             width: 48,
             height: 48,
-          ),
+            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                return const Icon(Icons.stadium_outlined, size: 48);
+            },
+            ),
           const SizedBox(width: 10),
           Text(text),
         ],

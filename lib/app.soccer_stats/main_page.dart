@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:soccer_stats/app.soccer_stats/common_widgets/date_selector.dart';
 import 'package:soccer_stats/app.soccer_stats/league_list.dart';
+import 'package:soccer_stats/app.soccer_stats/selector.dart';
+
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -9,7 +10,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        DateSelector(),
+        SelectorWidget(),
         Expanded(
           child: SingleChildScrollView(
             child: LeagueList(),
