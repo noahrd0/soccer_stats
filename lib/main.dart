@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'app.soccer_stats/main_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,12 +16,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,11 +42,10 @@ class MyHomePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Text(
-          'Welcome to Soccer Stats!',
-          style: TextStyle(fontSize: 24),
-        ),
+      body: const Column(
+        children: [
+          MainPage(),
+        ],
       ),
     );
   }
