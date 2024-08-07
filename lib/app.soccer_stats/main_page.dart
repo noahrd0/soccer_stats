@@ -10,7 +10,11 @@ class MainPage extends StatelessWidget {
     return const Column(
       children: [
         DateSelector(),
-        LeagueList(),
+        Expanded(
+          child: SingleChildScrollView(
+            child: LeagueList(),
+          ),
+        ),
       ],
     );
   }

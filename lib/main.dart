@@ -42,11 +42,7 @@ class MyHomePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: const Column(
-        children: [
-          MainPage(),
-        ],
-      ),
+      body: const MainPage()
     );
   }
 }

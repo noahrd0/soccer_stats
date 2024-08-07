@@ -19,7 +19,7 @@ class SingleLeague extends StatelessWidget {
     return ListTile(
       title: Row(
         children: [
-          Image.asset(
+          Image.network(
             imagePath,
             width: 48,
             height: 48,
