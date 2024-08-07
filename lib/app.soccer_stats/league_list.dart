@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'common_widgets/single_league.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class LeagueList extends StatefulWidget {
   const LeagueList({super.key});
@@ -20,28 +21,32 @@ class _LeagueListState extends State<LeagueList> {
   }
 
   Future<void> fetchLeagueData() async {
+    await dotenv.load();
     var headers = {
-      'x-rapidapi-key': '953bef4957246aa80190f16a405714d9',
+      'x-rapidapi-key': dotenv.env['API_KEY'] ?? '',
       'x-rapidapi-host': 'v3.football.api-sports.io',
     };
 
     var request = http.Request(
       'GET',
-      Uri.parse('https://v1.rugby.api-sports.io/leagues?season=2024&country=World'),
+      Uri.parse('https://v3.football.api-sports.io/leagues?season=2023&country=France'),
     );
     request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
+    try {
+      http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200) {
-      print(response.reasonPhrase);
-      String responseBody = await response.stream.bytesToString();
-      setState(() {
-        leagueData = jsonDecode(responseBody)['response'];
-        print("leagueData : $leagueData");
-      });
-    } else {
-      print(response.reasonPhrase);
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        setState(() {
+          leagueData = jsonDecode(responseBody)['response'];
+          print("leagueData: $leagueData");
+        });
+      } else {
+        print('Error: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Exception: $e');
     }
   }
 
@@ -50,16 +55,14 @@ class _LeagueListState extends State<LeagueList> {
     return leagueData == null
         ? const Center(child: CircularProgressIndicator())
         : Column(
-              children: leagueData!.map<Widget>((league) {
-                return SingleLeague(
-                  // imagePath: league['league']['logo']??'',
-                  // text: league['league']['name'],
-                  // value: league['league']['id'].toString(),
-                  imagePath: league['logo'],
-                  text: league['name'],
-                  value: league['id'].toString(),
-                );
-              }).toList(),
-            );
+            children: leagueData!.map<Widget>((league) {
+              return SingleLeague(
+                imagePath: league['league']['logo'] ?? '',
+                text: league['league']['name'],
+                value: league['league']['id'].toString(),
+                championshipId: league['league']['id'], 
+              );
+            }).toList(),
+          );
   }
 }

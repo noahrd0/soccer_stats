@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:soccer_stats/app.soccer_stats/common_widgets/date_selector.dart';
+import 'package:soccer_stats/championship_details.dart';
 
 
 class SingleLeague extends StatelessWidget {
   final String imagePath;
   final String text;
   final String value;
+  final int championshipId;
 
   const SingleLeague({
     super.key,
     required this.imagePath,
     required this.text,
     required this.value,
+    required this.championshipId,
   });
 
   @override
@@ -35,8 +38,17 @@ class SingleLeague extends StatelessWidget {
       onTap: () {
         const DateSelector dateSelector = DateSelector();
         int year = dateSelector.selectedYear;
-        print('Appel API avec la valeur : $value et l\'année : $year');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChampionshipDetailsPage(
+              championshipId: championshipId,
+              season: year,
+            ),
+          ),
+        );
       },
+      
     );
   }
 }
