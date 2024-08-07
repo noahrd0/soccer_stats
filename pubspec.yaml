@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   http: 1.2.2
   google_fonts: 6.2.1
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
     - images/bundesliga.png
     - images/worldcup.png
     - images/olympics.png
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

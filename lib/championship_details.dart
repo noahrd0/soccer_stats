@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChampionshipDetailsPage extends StatefulWidget {
   final int championshipId;
@@ -23,8 +24,9 @@ class _ChampionshipDetailsPageState extends State<ChampionshipDetailsPage> {
   }
 
   Future<void> fetchChampionshipDetails() async {
+    await dotenv.load();
     var headers = {
-      'x-rapidapi-key': '4eaaa12e25815b320db3722f5818f36d', // Remplacez par votre clé API
+      'x-rapidapi-key': dotenv.env['API_KEY'] ?? '',
       'x-rapidapi-host': 'v3.football.api-sports.io'
     };
     var leagueRequest = http.Request(
