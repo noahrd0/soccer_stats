@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+// import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'common_widgets/single_league.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -17,6 +18,7 @@ class _LeagueListState extends State<LeagueList> {
   @override
   void initState() {
     super.initState();
+    // loadLeagueData();
     fetchLeagueData();
   }
 
@@ -40,7 +42,7 @@ class _LeagueListState extends State<LeagueList> {
         String responseBody = await response.stream.bytesToString();
         setState(() {
           leagueData = jsonDecode(responseBody)['response'];
-          print("leagueData: $leagueData");
+          // print("leagueData: $leagueData");
         });
       } else {
         print('Error: ${response.reasonPhrase}');
@@ -49,6 +51,20 @@ class _LeagueListState extends State<LeagueList> {
       print('Exception: $e');
     }
   }
+
+  // Future<void> loadLeagueData() async {
+  //   try {
+  //     // Chargement du fichier JSON
+  //     final String response = await rootBundle.loadString('images/league.json');
+  //     final Map<String, dynamic> data = jsonDecode(response);
+
+  //     setState(() {
+  //       leagueData = data['response'];
+  //     });
+  //   } catch (e) {
+  //     print('Exception: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
