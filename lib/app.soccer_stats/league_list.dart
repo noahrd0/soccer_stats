@@ -1,65 +1,82 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'common_widgets/single_league.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:soccer_stats/app.soccer_stats/common_widgets/single_league.dart';
 
 class LeagueList extends StatefulWidget {
-  const LeagueList({super.key});
+  const LeagueList({Key? key}) : super(key: key);
 
   @override
-  _LeagueListState createState() => _LeagueListState();
+  LeagueListState createState() => LeagueListState();
 }
 
-class _LeagueListState extends State<LeagueList> {
+class LeagueListState extends State<LeagueList> {
   List<dynamic>? leagueData;
 
   @override
   void initState() {
+    print('LeagueListState initState');
     super.initState();
-    fetchLeagueData();
+    fetchLeagueData("2024", "BR");
   }
 
-  Future<void> fetchLeagueData() async {
+  Future<void> fetchLeagueData(String year, String country) async {
+    await dotenv.load();
     var headers = {
-      'x-rapidapi-key': '953bef4957246aa80190f16a405714d9',
-      'x-rapidapi-host': 'v3.football.api-sports.io',
+      'x-rapidapi-key': dotenv.env['API_KEY'] ?? '',
     };
 
+    String url;
+    if (country == "world") {
+      url = 'https://v3.football.api-sports.io/leagues?season=$year&country=World';
+    } else {
+      url = 'https://v3.football.api-sports.io/leagues?season=$year&code=$country';
+    }
+
+    print('URL: $url');
     var request = http.Request(
       'GET',
-      Uri.parse('https://v1.rugby.api-sports.io/leagues?season=2024&country=World'),
+      Uri.parse(url),
     );
     request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
+    try {
+      http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200) {
-      print(response.reasonPhrase);
-      String responseBody = await response.stream.bytesToString();
-      setState(() {
-        leagueData = jsonDecode(responseBody)['response'];
-        print("leagueData : $leagueData");
-      });
-    } else {
-      print(response.reasonPhrase);
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        setState(() {
+          leagueData = jsonDecode(responseBody)['response'];
+        });
+      } else {
+        print('Error: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Exception: $e');
     }
+  }
+
+  void reload(String year, String country) {
+    fetchLeagueData(year, country);
   }
 
   @override
   Widget build(BuildContext context) {
+    print('LeagueListState build, leagueData: $leagueData');
     return leagueData == null
         ? const Center(child: CircularProgressIndicator())
         : Column(
-              children: leagueData!.map<Widget>((league) {
-                return SingleLeague(
-                  // imagePath: league['league']['logo']??'',
-                  // text: league['league']['name'],
-                  // value: league['league']['id'].toString(),
-                  imagePath: league['logo'],
-                  text: league['name'],
-                  value: league['id'].toString(),
-                );
-              }).toList(),
-            );
+            children: leagueData!.map<Widget>((league) {
+              return SingleLeague(
+                imagePath: league['league']['logo'] ?? '',
+                text: league['league']['name'],
+                value: league['league']['id'].toString(),
+                // imagePath: league['logo'] ?? '',
+                // text: league['name'],
+                // value: league['id'].toString(),
+              );
+            }).toList(),
+          );
   }
 }
