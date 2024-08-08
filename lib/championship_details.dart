@@ -165,33 +165,33 @@ class _ChampionshipDetailsPageState extends State<ChampionshipDetailsPage> {
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Matchs joués: ${scorer['statistics'][0]['games']['appearences']}',
-                                    style: GoogleFonts.numans(
-                                      textStyle: const TextStyle(
-                                        fontSize: 16,
-                                        color: Color(0xFFB9848C),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Matchs joués: ${scorer['statistics'][0]['games']['appearences']}',
+                                              style: GoogleFonts.numans(
+                                                textStyle: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Color(0xFFB9848C),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          // Logo du club centré
+                                          Expanded(
+                                            child: Center(
+                                              child: Image.network(
+                                                scorer['statistics'][0]['team']['logo'],
+                                                width: 50,
+                                                height: 50,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                // Logo du club centré
-                                Expanded(
-                                  child: Center(
-                                    child: Image.network(
-                                      scorer['statistics'][0]['team']['logo'],
-                                      width: 50,
-                                      height: 50,
-                                    ),
+                                    ],
                                   ),
                                 ),
                               ],
