@@ -36,9 +36,13 @@ class MyHomePage extends StatelessWidget {
             fontFamily: 'Fira Sans',
           ),
         ),
-        leading: const Icon(
-          color: Colors.white,
-          Icons.sports_soccer,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Image.asset(
+            'images/logo.png',
+            width: 30,
+            height: 30,
+          ),
         ),
         centerTitle: true,
       ),

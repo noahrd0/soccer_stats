@@ -64,13 +64,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/laliga.png
-    - images/ligue1.png
-    - images/premierleague.png
-    - images/seriea.png
-    - images/bundesliga.png
-    - images/worldcup.png
-    - images/olympics.png
+    - images/logo.png
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
