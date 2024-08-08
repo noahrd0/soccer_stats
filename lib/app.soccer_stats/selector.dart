@@ -24,35 +24,62 @@ class _SelectorWidgetState extends State<SelectorWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min, // Set mainAxisSize to min
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            dateSelector,
-            const SizedBox(width: 10),
-            countrySelector,
-            const SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: () {
-                int selectedYear = dateSelector.selectedYear;
-                String? selectedCountry = countrySelector.country;
-                selectedCountry ??= 'world';
-
-                // Accéder à l'état de LeagueList et appeler reload
-                leagueListKey.currentState?.reload(selectedYear.toString(), selectedCountry);
-              },
-              child: const Text('Submit'),
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 482,
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+              borderRadius: BorderRadius.circular(10),
             ),
-          ],
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            child: LeagueList(key: leagueListKey),
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                dateSelector,
+                const SizedBox(width: 10),
+                countrySelector,
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    int selectedYear = dateSelector.selectedYear;
+                    String? selectedCountry = countrySelector.country;
+                    selectedCountry ??= 'world';
+
+                    leagueListKey.currentState?.reload(selectedYear.toString(), selectedCountry);
+                  },
+                    style: ElevatedButton.styleFrom(
+                    shadowColor: Colors.grey.withOpacity(0.5),
+                    backgroundColor: Colors.white,
+                    elevation: 5,
+                    ),
+                  child: const Text(
+                    'Submit',
+                    style: TextStyle(color: Color(0xFFB9848C)),
+                  ),
+                ),
+                const SizedBox(width: 10),
+              ],
+            ),
           ),
-        ),
-      ],
+          Expanded(
+            child: SingleChildScrollView(
+              child: LeagueList(key: leagueListKey),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -31,15 +31,15 @@ class _DateSelectorState extends State<DateSelector> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
-          icon: const Icon(Icons.arrow_left),
+          icon: const Icon(Icons.arrow_left, color: Color(0xFFB9848C)),
           onPressed: _decrementYear,
         ),
         Text(
           year.toString(),
-          style: const TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18, color: Color(0xFFB9848C)),
         ),
         IconButton(
-          icon: const Icon(Icons.arrow_right),
+          icon: const Icon(Icons.arrow_right, color: Color(0xFFB9848C)),
           onPressed: _incrementYear,
         ),
       ],
