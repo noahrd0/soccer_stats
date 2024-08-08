@@ -1,40 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:soccer_stats/app.soccer_stats/common_widgets/date_selector.dart';
 import 'package:soccer_stats/app.soccer_stats/common_widgets/country_selector.dart';
+import 'package:soccer_stats/app.soccer_stats/league_list.dart';
 
-class SelectorWidget extends StatelessWidget {
-  const SelectorWidget({super.key});
+class SelectorWidget extends StatefulWidget {
+  const SelectorWidget({Key? key}) : super(key: key);
+
+  @override
+  _SelectorWidgetState createState() => _SelectorWidgetState();
+}
+
+class _SelectorWidgetState extends State<SelectorWidget> {
+  final GlobalKey<LeagueListState> leagueListKey = GlobalKey<LeagueListState>();
+  late DateSelector dateSelector;
+  late CountrySelector countrySelector;
+
+  @override
+  void initState() {
+    super.initState();
+    dateSelector = const DateSelector();
+    countrySelector = const CountrySelector();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Form(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const DateSelector(),
-                const SizedBox(width: 10),
-                const CountrySelector(),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    const DateSelector dateSelector = DateSelector();
-                    int year = dateSelector.selectedYear;
-                    const CountrySelector countrySelector = CountrySelector();
-                    String? country = countrySelector.country;
-                    print('Appel API avec l\'année : $year et le pays : $country');
-                  },
-                  child: const Text('Submit'),
-                ),
-              ],
+    return Column(
+      mainAxisSize: MainAxisSize.min, // Set mainAxisSize to min
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            dateSelector,
+            const SizedBox(width: 10),
+            countrySelector,
+            const SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () {
+                int selectedYear = dateSelector.selectedYear;
+                String? selectedCountry = countrySelector.country;
+                selectedCountry ??= 'world';
+
+                // Accéder à l'état de LeagueList et appeler reload
+                leagueListKey.currentState?.reload(selectedYear.toString(), selectedCountry);
+              },
+              child: const Text('Submit'),
             ),
+          ],
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: LeagueList(key: leagueListKey),
           ),
-          const SizedBox(height: 10),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

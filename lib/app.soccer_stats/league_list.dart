@@ -1,37 +1,44 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-// import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
-import 'common_widgets/single_league.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:soccer_stats/app.soccer_stats/common_widgets/single_league.dart';
 
 class LeagueList extends StatefulWidget {
-  const LeagueList({super.key});
+  const LeagueList({Key? key}) : super(key: key);
 
   @override
-  _LeagueListState createState() => _LeagueListState();
+  LeagueListState createState() => LeagueListState();
 }
 
-class _LeagueListState extends State<LeagueList> {
+class LeagueListState extends State<LeagueList> {
   List<dynamic>? leagueData;
 
   @override
   void initState() {
+    print('LeagueListState initState');
     super.initState();
     // loadLeagueData();
-    fetchLeagueData();
+    fetchLeagueData("2024", "world");
   }
 
-  Future<void> fetchLeagueData() async {
+Future<void> fetchLeagueData(String year, String country) async {
     await dotenv.load();
     var headers = {
       'x-rapidapi-key': dotenv.env['API_KEY'] ?? '',
-      'x-rapidapi-host': 'v3.football.api-sports.io',
     };
 
+    String url;
+    if (country == "world") {
+      url = 'https://v3.football.api-sports.io/leagues?season=$year&country=World';
+    } else {
+      url = 'https://v3.football.api-sports.io/leagues?season=$year&code=$country';
+    }
+
+    print('URL: $url');
     var request = http.Request(
       'GET',
-      Uri.parse('https://v3.football.api-sports.io/leagues?season=2023&country=France'),
+      Uri.parse(url),
     );
     request.headers.addAll(headers);
 
@@ -42,7 +49,6 @@ class _LeagueListState extends State<LeagueList> {
         String responseBody = await response.stream.bytesToString();
         setState(() {
           leagueData = jsonDecode(responseBody)['response'];
-          // print("leagueData: $leagueData");
         });
       } else {
         print('Error: ${response.reasonPhrase}');
@@ -52,22 +58,14 @@ class _LeagueListState extends State<LeagueList> {
     }
   }
 
-  // Future<void> loadLeagueData() async {
-  //   try {
-  //     // Chargement du fichier JSON
-  //     final String response = await rootBundle.loadString('images/league.json');
-  //     final Map<String, dynamic> data = jsonDecode(response);
+  void reload(String year, String country) {
+    fetchLeagueData(year, country);
+  }
 
-  //     setState(() {
-  //       leagueData = data['response'];
-  //     });
-  //   } catch (e) {
-  //     print('Exception: $e');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
+    print('LeagueListState build, leagueData: $leagueData');
     return leagueData == null
         ? const Center(child: CircularProgressIndicator())
         : Column(
