@@ -407,6 +407,9 @@ class _ChampionshipDetailsPageState extends State<ChampionshipDetailsPage> {
           ),
         ),
         backgroundColor: const Color(0xFF2F70AF),
+        iconTheme: const IconThemeData(
+          color: Colors.white, // Couleur de la flèche de retour
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -425,14 +428,17 @@ class _ChampionshipDetailsPageState extends State<ChampionshipDetailsPage> {
             ),
             const SizedBox(height: 15),
             // Menu horizontal avec des boutons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildStatButton('Scorers', 'topscorers'),
-                _buildStatButton('Assists', 'topassists'),
-                _buildStatButton('Yellow Cards', 'topyellowcards'),
-                _buildStatButton('Red Cards', 'topredcards'),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildStatButton('Scorers', 'topscorers'),
+                  _buildStatButton('Assists', 'topassists'),
+                  _buildStatButton('Yellow Cards', 'topyellowcards'),
+                  _buildStatButton('Red Cards', 'topredcards'),
+                ],
+              ),
             ),
             const SizedBox(height: 15),
             Card(
