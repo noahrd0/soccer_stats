@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 String? selectedCountry;
 
 class CountrySelector extends StatefulWidget {
-  const CountrySelector({super.key});
+  const CountrySelector({Key? key}) : super(key: key);
 
   String? get country => selectedCountry;
 
@@ -12,7 +12,6 @@ class CountrySelector extends StatefulWidget {
 }
 
 class _CountrySelectorState extends State<CountrySelector> {
-
   final List<Map<String, String>> countries = [
     {'name': 'Brazil', 'code': 'br'},
     {'name': 'Argentina', 'code': 'ar'},
@@ -30,45 +29,62 @@ class _CountrySelectorState extends State<CountrySelector> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: selectedCountry,
-      onChanged: (String? newValue) {
-        setState(() {
-          selectedCountry = newValue;
-        });
-      },
-      items: countries.map<DropdownMenuItem<String>>((Map<String, String> country) {
-        if (country['name'] == 'World') {
-          return DropdownMenuItem<String>(
-            value: country['code'],
-            child: Row(
-              children: [
-                const SizedBox(width: 15),
-                Image.network(
-                  country['image']!,
-                  width: 30,
-                ),
-                const SizedBox(width: 15),
-                Text(country['name']!),
-              ],
-            ),
-          );
-        } else {
-          return DropdownMenuItem<String>(
-            value: country['code'],
-            child: Row(
-              children: [
-                const SizedBox(width: 10),
-                Image.network(
-                  'https://flagcdn.com/w40/${country['code']}.png',
-                ),
-                const SizedBox(width: 10),
-                Text(country['name']!),
-              ],
-            ),
-          );
-        }
-      }).toList(),
+    return Container(
+      color: Colors.white,
+      child: DropdownButton<String>(
+        value: selectedCountry,
+        icon: const Icon(
+          Icons.arrow_drop_down,
+          color: Color(0xFFB9848C),
+        ),
+        onChanged: (String? newValue) {
+          setState(() {
+            selectedCountry = newValue;
+          });
+        },
+        items: countries.map<DropdownMenuItem<String>>((Map<String, String> country) {
+          if (country['name'] == 'World') {
+            return DropdownMenuItem<String>(
+              value: country['code'],
+              child: Row(
+                children: [
+                  const SizedBox(width: 15),
+                    const Icon(
+                    Icons.language,
+                    color: Color(0xFFB9848C),
+                    ),
+                  const SizedBox(width: 15),
+                  Text(
+                    country['name']!,
+                    style: const TextStyle(
+                      color: Color(0xFFB9848C), // Change the text color here
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return DropdownMenuItem<String>(
+              value: country['code'],
+              child: Row(
+                children: [
+                  const SizedBox(width: 10),
+                  Image.network(
+                    'https://flagcdn.com/w40/${country['code']}.png',
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    country['name']!,
+                    style: const TextStyle(
+                      color: Color(0xFFB9848C), // Change the text color here
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        }).toList(),
+      ),
     );
   }
 }

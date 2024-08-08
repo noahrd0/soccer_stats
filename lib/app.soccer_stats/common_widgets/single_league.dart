@@ -31,10 +31,15 @@ class SingleLeague extends StatelessWidget {
             },
             ),
           const SizedBox(width: 10),
-          Text(text),
+            Text(
+            text,
+            style: const TextStyle(
+              color: Color(0xFF806491),
+            ),
+            ),
         ],
       ),
-      trailing: const Icon(Icons.arrow_forward),
+      trailing: const Icon(Icons.arrow_forward, color: Color(0xFF806491)),
       onTap: () {
         const DateSelector dateSelector = DateSelector();
         int year = dateSelector.selectedYear;
