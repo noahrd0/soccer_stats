@@ -18,10 +18,11 @@ class LeagueListState extends State<LeagueList> {
   void initState() {
     print('LeagueListState initState');
     super.initState();
-    fetchLeagueData("2024", "BR");
+    // loadLeagueData();
+    fetchLeagueData("2024", "world");
   }
 
-  Future<void> fetchLeagueData(String year, String country) async {
+Future<void> fetchLeagueData(String year, String country) async {
     await dotenv.load();
     var headers = {
       'x-rapidapi-key': dotenv.env['API_KEY'] ?? '',
@@ -61,6 +62,7 @@ class LeagueListState extends State<LeagueList> {
     fetchLeagueData(year, country);
   }
 
+
   @override
   Widget build(BuildContext context) {
     print('LeagueListState build, leagueData: $leagueData');
@@ -72,9 +74,7 @@ class LeagueListState extends State<LeagueList> {
                 imagePath: league['league']['logo'] ?? '',
                 text: league['league']['name'],
                 value: league['league']['id'].toString(),
-                // imagePath: league['logo'] ?? '',
-                // text: league['name'],
-                // value: league['id'].toString(),
+                championshipId: league['league']['id'], 
               );
             }).toList(),
           );
