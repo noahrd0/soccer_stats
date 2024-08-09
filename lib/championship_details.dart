@@ -73,155 +73,200 @@ class _ChampionshipDetailsPageState extends State<ChampionshipDetailsPage> {
     }
   }
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text(
-        'Championship Details',
-        style: GoogleFonts.firaSans(
-          textStyle: const TextStyle(color: Colors.white),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Championship Details',
+          style: GoogleFonts.firaSans(
+            textStyle: const TextStyle(color: Colors.white),
+          ),
         ),
+        backgroundColor: const Color(0xFF2F70AF),
       ),
-      backgroundColor: const Color(0xFF2F70AF),
-    ),
-    body: championshipDetails == null
-        ? const Center(child: CircularProgressIndicator())
-        : Column(
-            children: [
-              // Ajout de la barre de boutons
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildStatButton('Scorers', 'topscorers'),
-                    _buildStatButton('Assists', 'topassists'),
-                    _buildStatButton('Yellow Cards', 'topyellowcards'),
-                    _buildStatButton('Red Cards', 'topredcards'),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: championshipDetails![selectedStatType] == null || championshipDetails![selectedStatType].isEmpty
-                    ? const Center(child: Text('No data available for the selected stat type.'))
-                    : SingleChildScrollView(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ...championshipDetails![selectedStatType].map<Widget>((stat) {
-                              final statResult = _getStatValue(stat);
-                              String statLabel = statResult['StatLabel'] ?? 'Stat';
-                              String statValue = statResult['StatValue'] ?? '0';
+      body: championshipDetails == null
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Affichage du nom de la ligue
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      championshipDetails!['league']['name'],
+                      style: GoogleFonts.firaSans(
+                        textStyle: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2F70AF),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                    // Menu horizontal avec des boutons
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildStatButton('Scorers', 'topscorers'),
+                          _buildStatButton('Assists', 'topassists'),
+                          _buildStatButton('Yellow Cards', 'topyellowcards'),
+                          _buildStatButton('Red Cards', 'topredcards'),
+                        ],
+                      ),
+                    ),
+                  const SizedBox(height: 5),
+                  // Affichage du type de statistique et de la saison
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Top ${_getStatLabel()} for the Season ${widget.season}',
+                      style: GoogleFonts.firaSans(
+                        textStyle: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF806491),
+                        ),
+                      ),
+                    ),
+                  ),
+                Expanded(
+                  child: championshipDetails![selectedStatType] == null || championshipDetails![selectedStatType].isEmpty
+                      ? const Center(child: Text('No data available for the selected stat type.'))
+                      : SingleChildScrollView(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ...championshipDetails![selectedStatType].map<Widget>((stat) {
+                                final statResult = _getStatValue(stat);
+                                String statLabel = statResult['StatLabel'] ?? 'Stat';
+                                String statValue = statResult['StatValue'] ?? '0';
 
-                              return Card(
-                                margin: const EdgeInsets.symmetric(vertical: 10),
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundImage: NetworkImage(stat['player']['photo']),
-                                            radius: 30,
-                                          ),
-                                          const SizedBox(width: 15),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  stat['player']['name'],
-                                                  style: GoogleFonts.firaSans(
-                                                    textStyle: const TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        '$statLabel: $statValue',
-                                                        style: GoogleFonts.numans(
-                                                          textStyle: const TextStyle(
-                                                            fontSize: 16,
-                                                            color: Color(0xFF2F70AF),
-                                                          ),
-                                                        ),
+                                return Card(
+                                  margin: const EdgeInsets.symmetric(vertical: 10),
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundImage: NetworkImage(stat['player']['photo']),
+                                              radius: 30,
+                                            ),
+                                            const SizedBox(width: 15),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    stat['player']['name'],
+                                                    style: GoogleFonts.firaSans(
+                                                      textStyle: const TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.bold,
                                                       ),
                                                     ),
-                                                    Expanded(
-                                                      child: Center(
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
                                                         child: Text(
-                                                          stat['statistics'][0]['team']['name'],
+                                                          '$statLabel: $statValue',
                                                           style: GoogleFonts.numans(
                                                             textStyle: const TextStyle(
                                                               fontSize: 16,
                                                               color: Color(0xFF2F70AF),
                                                             ),
                                                           ),
-                                                          overflow: TextOverflow.ellipsis,
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        'Matches Played: ${stat['statistics'][0]['games']['appearences']}',
-                                                        style: GoogleFonts.numans(
-                                                          textStyle: const TextStyle(
-                                                            fontSize: 16,
-                                                            color: Color(0xFF2F70AF),
+                                                      Expanded(
+                                                        child: Center(
+                                                          child: Text(
+                                                            stat['statistics'][0]['team']['name'],
+                                                            style: GoogleFonts.numans(
+                                                              textStyle: const TextStyle(
+                                                                fontSize: 16,
+                                                                color: Color(0xFF2F70AF),
+                                                              ),
+                                                            ),
+                                                            overflow: TextOverflow.ellipsis,
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Expanded(
-                                                      child: Center(
-                                                        child: Image.network(
-                                                          stat['statistics'][0]['team']['logo'],
-                                                          width: 50,
-                                                          height: 50,
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 10),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text(
+                                                          'Matches Played: ${stat['statistics'][0]['games']['appearences']}',
+                                                          style: GoogleFonts.numans(
+                                                            textStyle: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color(0xFF2F70AF),
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                                      Expanded(
+                                                        child: Center(
+                                                          child: Image.network(
+                                                            stat['statistics'][0]['team']['logo'],
+                                                            width: 50,
+                                                            height: 50,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }).toList(),
-                          ],
+                                );
+                              }).toList(),
+                            ],
+                          ),
                         ),
-                      ),
-              ),
-            ],
-          ),
-  );
-}
+                ),
+              ],
+            ),
+    );
+  }
 
+  // Retourne le label correspondant à la statistique sélectionnée
+  String _getStatLabel() {
+    switch (selectedStatType) {
+      case 'topassists':
+        return 'Assists';
+      case 'topredcards':
+        return 'Red Cards';
+      case 'topyellowcards':
+        return 'Yellow Cards';
+      case 'topscorers':
+      default:
+        return 'Goals';
+    }
+  }
 
   Map<String, String> _getStatValue(Map<String, dynamic> stat) {
     String statValue = '';
