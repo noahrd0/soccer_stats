@@ -62,221 +62,215 @@ class _ChampionshipDetailsPageState extends State<ChampionshipDetailsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Championship Details',
-          style: GoogleFonts.firaSans(
-            textStyle: const TextStyle(color: Colors.white),
-          ),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(
+        'Championship Details',
+        style: GoogleFonts.firaSans(
+          textStyle: const TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xFF2F70AF),
       ),
-      body: championshipDetails == null
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    championshipDetails!['league']['name'],
-                    style: GoogleFonts.firaSans(
-                      textStyle: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF2F70AF),
-                      ),
+      backgroundColor: const Color(0xFF2F70AF),
+    ),
+    body: championshipDetails == null
+        ? const Center(child: CircularProgressIndicator())
+        : SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  championshipDetails!['league']['name'],
+                  style: GoogleFonts.firaSans(
+                    textStyle: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF2F70AF),
                     ),
                   ),
-                  const SizedBox(height: 15),
-                  // Menu horizontal avec des boutons
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildStatButton('Scorers', 'topscorers'),
-                        _buildStatButton('Assists', 'topassists'),
-                        _buildStatButton('Yellow Cards', 'topyellowcards'),
-                        _buildStatButton('Red Cards', 'topredcards'),
-                      ],
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildStatButton('Scorers', 'topscorers'),
+                    _buildStatButton('Assists', 'topassists'),
+                    _buildStatButton('Yellow Cards', 'topyellowcards'),
+                    _buildStatButton('Red Cards', 'topredcards'),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  'Top ${_getStatValue({})['StatLabel'] for the Season ${widget.season}',
+                  style: GoogleFonts.firaSans(
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF806491),
                     ),
                   ),
-                  const SizedBox(height: 15),
-                  Text(
-                    'Top ${_getStatValue({})['StatLabel']} for the Season ${widget.season}',
-                    style: GoogleFonts.firaSans(
-                      textStyle: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF806491),
-                      ),
+                ),
+                const SizedBox(height: 10),
+                ...championshipDetails![selectedStatType].map<Widget>((stat) {
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  ...championshipDetails![selectedStatType].map<Widget>((stat) {
-                    final statResult = _getStatValue(stat);
-                    final statLabel = statResult['StatLabel'];
-                    final statValue = statResult['StatValue'];
-
-                    return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                CircleAvatar(
-                                  backgroundImage: NetworkImage(stat['player']['photo']),
-                                  radius: 30,
-                                ),
-                                const SizedBox(width: 15),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        stat['player']['name'],
-                                        style: GoogleFonts.firaSans(
-                                          textStyle: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(stat['player']['photo']),
+                                radius: 30,
+                              ),
+                              const SizedBox(width: 15),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      stat['player']['name'],
+                                      style: GoogleFonts.firaSans(
+                                        textStyle: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      const SizedBox(height: 5),
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Expanded(
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            '$selectedStatType: ${_getStatValue(stat)}',
+                                            style: GoogleFonts.numans(
+                                              textStyle: const TextStyle(
+                                                fontSize: 16,
+                                                color: Color(0xFF2F70AF),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Center(
                                             child: Text(
-                                              '$statLabel: $statValue',
+                                              stat['statistics'][0]['team']['name'],
                                               style: GoogleFonts.numans(
                                                 textStyle: const TextStyle(
                                                   fontSize: 16,
                                                   color: Color(0xFF2F70AF),
                                                 ),
                                               ),
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                stat['statistics'][0]['team']['name'],
-                                                style: GoogleFonts.numans(
-                                                  textStyle: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: Color(0xFF2F70AF),
-                                                  ),
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            'Matches Played: ${stat['statistics'][0]['games']['appearences']}',
+                                            style: GoogleFonts.numans(
+                                              textStyle: const TextStyle(
+                                                fontSize: 16,
+                                                color: Color(0xFF2F70AF),
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              'Matches Played: ${stat['statistics'][0]['games']['appearences']}',
-                                              style: GoogleFonts.numans(
-                                                textStyle: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: Color(0xFF2F70AF),
-                                                ),
-                                              ),
+                                        ),
+                                        Expanded(
+                                          child: Center(
+                                            child: Image.network(
+                                              stat['statistics'][0]['team']['logo'],
+                                              width: 50,
+                                              height: 50,
                                             ),
                                           ),
-                                          Expanded(
-                                            child: Center(
-                                              child: Image.network(
-                                                stat['statistics'][0]['team']['logo'],
-                                                width: 50,
-                                                height: 50,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    );
-                  }).toList(),
-                ],
-              ),
+                    ),
+                  );
+                }).toList(),
+              ],
             ),
-    );
-  }
-
-  Map<String, String> _getStatValue(Map<String, dynamic> stat) {
-    String statValue;
-    String statLabel;
-
-    switch (selectedStatType) {
-      case 'topassists':
-        statValue = stat['statistics'][0]['goals']['assists'].toString();
-        statLabel = 'Assists';
-        break;
-      case 'topredcards':
-        statValue = stat['statistics'][0]['cards']['red'].toString();
-        statLabel = 'Red Cards';
-        break;
-      case 'topyellowcards':
-        statValue = stat['statistics'][0]['cards']['yellow'].toString();
-        statLabel = 'Yellow Cards';
-        break;
-      case 'topscorers':
-      default:
-        statValue = stat['statistics'][0]['goals']['total'].toString();
-        statLabel = 'Goals';
-        break;
-    }
-
-    return {
-      'StatLabel': statLabel,
-      'StatValue': statValue,
-    };
-  }
-
-  // Méthode pour créer chaque bouton de statistique
-  Widget _buildStatButton(String label, String statType) {
-    return TextButton(
-      onPressed: () {
-        setState(() {
-          selectedStatType = statType;
-          fetchChampionshipDetails(); // Recharger les données en fonction du type de stat
-        });
-      },
-      child: Text(
-        label,
-        style: GoogleFonts.firaSans(
-          textStyle: TextStyle(
-            fontSize: 16,
-            color: selectedStatType == statType ? Color(0xFF806491) : Colors.black,
-            fontWeight: selectedStatType == statType ? FontWeight.bold : FontWeight.normal,
           ),
-        ),
-      ),
-    );
-  }
+  );
 }
+
+// //   // Méthode pour obtenir la valeur de la statistique en fonction du type
+//   Map<String, String> _getStatValue(Map<String, dynamic> stat) {
+//   String statValue;
+//   String statLabel;
+
+//   switch (selectedStatType) {
+//     case 'topassists':
+//       statValue = stat['statistics'][0]['goals']['assists'].toString();
+//       statLabel = 'Assists';
+//       break;
+//     case 'topredcards':
+//       statValue = stat['statistics'][0]['cards']['red'].toString();
+//       statLabel = 'Red Cards';
+//       break;
+//     case 'topyellowcards':
+//       statValue = stat['statistics'][0]['cards']['yellow'].toString();
+//       statLabel = 'Yellow Cards';
+//       break;
+//     case 'topscorers':
+//     default:
+//       statValue = stat['statistics'][0]['goals']['total'].toString();
+//       statLabel = 'Goals';
+//       break;
+//   }
+
+//   return {
+//     'StatLabel': statLabel,
+//     'StatValue': statValue,
+//   };
+// }
+
+
+// //   // Méthode pour créer chaque bouton de statistique
+// //   Widget _buildStatButton(String label, String statType) {
+// //     return TextButton(
+// //       onPressed: () {
+// //         setState(() {
+// //           selectedStatType = statType;
+// //           fetchChampionshipDetails(); // Recharger les données en fonction du type de stat
+// //         });
+// //       },
+// //       child: Text(
+// //         label,
+// //         style: GoogleFonts.firaSans(
+// //           textStyle: TextStyle(
+// //             fontSize: 16,
+// //             color: selectedStatType == statType ? Color(0xFF806491) : Colors.black,
+// //             fontWeight: selectedStatType == statType ? FontWeight.bold : FontWeight.normal,
+// //           ),
+// //         ),
+// //       ),
+// //     );
+// //   }
+// // }
 
 
 // import 'package:flutter/material.dart';
