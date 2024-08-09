@@ -52,12 +52,15 @@ class _CountrySelectorState extends State<CountrySelector> {
                     const Icon(
                     Icons.language,
                     color: Color(0xFFB9848C),
+                    size: 30,
                     ),
                   const SizedBox(width: 15),
                   Text(
                     country['name']!,
                     style: const TextStyle(
-                      color: Color(0xFFB9848C), // Change the text color here
+                      color: Color(0xFFB9848C),
+                      fontFamily: 'Numans',
+                      fontSize: 18,
                     ),
                   ),
                 ],
@@ -76,7 +79,9 @@ class _CountrySelectorState extends State<CountrySelector> {
                   Text(
                     country['name']!,
                     style: const TextStyle(
-                      color: Color(0xFFB9848C), // Change the text color here
+                      color: Color(0xFFB9848C),
+                      fontFamily: 'Numans',
+                      fontSize: 18,
                     ),
                   ),
                 ],

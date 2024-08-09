@@ -36,7 +36,7 @@ class _DateSelectorState extends State<DateSelector> {
         ),
         Text(
           year.toString(),
-          style: const TextStyle(fontSize: 18, color: Color(0xFFB9848C)),
+          style: const TextStyle(fontSize: 18, color: Color(0xFFB9848C), fontFamily: 'Numans'),
         ),
         IconButton(
           icon: const Icon(Icons.arrow_right, color: Color(0xFFB9848C)),
