@@ -31,11 +31,16 @@ class SingleLeague extends StatelessWidget {
             },
             ),
           const SizedBox(width: 10),
-            Text(
-            text,
-            style: const TextStyle(
-              color: Color(0xFF806491),
-            ),
+            Expanded(
+                child: Text(
+                text,
+                style: const TextStyle(
+                  color: Color(0xFF806491),
+                  fontFamily: 'Numans',
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                ),
             ),
         ],
       ),

@@ -68,7 +68,11 @@ class _SelectorWidgetState extends State<SelectorWidget> {
                 ),
                 child: const Text(
                   'Submit',
-                  style: TextStyle(color: Color(0xFFB9848C)),
+                  style: TextStyle(
+                    color: Color(0xFFB9848C),
+                    fontFamily: 'Numans',
+                    fontSize: 16,
+                  ),
                 ),
                 ),
                 const SizedBox(width: 10),
